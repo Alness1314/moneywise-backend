@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-MoneywiseApplication<moneywise>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.alness.moneywise.MoneywiseApplication",
+            "projectName": "moneywise",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

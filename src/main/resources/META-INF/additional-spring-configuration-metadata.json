@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "api.prefix",
+  "type": "java.lang.String",
+  "description": "Used to identify backend endpoints"
+}]}
