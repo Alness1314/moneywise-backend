@@ -48,9 +48,8 @@ public class UserSpecification implements Specification<UserEntity> {
     }
 
     private Specification<UserEntity> filterByUsername(String username) {
-        return (root, query, cb) -> {
-            return cb.like(root.<String>get("username"), username);
-        };
+        return (root, query, cb) -> cb.like(root.<String>get("username"), username);
+        
     }
 
     private Specification<UserEntity> filterByEnable(String enabled) {

@@ -60,7 +60,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse findOne(String id) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findOne'");
     }
 
@@ -71,7 +70,7 @@ public class UserServiceImpl implements UserService {
         // Inicializar el detalle del usuario
         if (request.getDetailUser() != null) {
             DetailEntity detail = mapper.map(request.getDetailUser(), DetailEntity.class);
-            detail.setUser(newUser); // Asegúrate de establecer la referencia bidireccional
+            detail.setUser(newUser); // establece la referencia bidireccional
             newUser.setDetailUser(detail);
         }
 
@@ -94,13 +93,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse update(String id, UserRequest request) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
 
     @Override
     public CommonResponse delete(String id) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'delete'");
     }
 

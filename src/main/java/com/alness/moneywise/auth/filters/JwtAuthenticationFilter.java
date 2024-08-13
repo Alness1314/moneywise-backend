@@ -81,7 +81,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .compact();
 
         response.addHeader(HttpHeaders.AUTHORIZATION, JwtTokenConfig.PREFIX_TOKEN + token);
-        Map<String, Object> bodyResponse = new HashMap<String, Object>();
+        Map<String, Object> bodyResponse = new HashMap<>();
         bodyResponse.put("access_token", token);
         bodyResponse.put("message", "I log in with a valid user.");
         response.getWriter().write(new ObjectMapper().writeValueAsString(bodyResponse));
@@ -92,7 +92,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
             AuthenticationException failed) throws IOException, ServletException {
-        Map<String, Object> bodyResponse = new HashMap<String, Object>();
+        Map<String, Object> bodyResponse = new HashMap<>();
         bodyResponse.put("message", "User authentication error or incorrect password.");
         bodyResponse.put("error", failed.getMessage());
         response.getWriter().write(new ObjectMapper().writeValueAsString(bodyResponse));

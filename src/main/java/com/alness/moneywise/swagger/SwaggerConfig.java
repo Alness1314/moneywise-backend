@@ -18,7 +18,7 @@ public class SwaggerConfig {
 	@Bean
 	public OpenAPI customOpenAPI() {
 		var openApi = new OpenAPI()
-				.info((Info) getInfo());
+				.info(getInfo());
 		addSecurity(openApi);
 		return openApi;
 	}

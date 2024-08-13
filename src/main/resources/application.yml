@@ -1,6 +1,6 @@
 #server configuration
 server:
-    port: 8082
+    port: ${PORT}
     #error:
         #include-stacktrace: never
 
@@ -16,9 +16,9 @@ spring:
             max-request-size: 10MB
 #datasource
     datasource:
-        url: jdbc:postgresql://localhost:5432/moneywise-db
-        username: postgres
-        password: Alness0727#
+        url: jdbc:postgresql://${DB_URL}/${DB_NAME}
+        username: ${DB_USERNAME}
+        password: ${DB_PASSWORD}
         driver-class-name: org.postgresql.Driver
     jpa: 
         database-platform: org.hibernate.dialect.PostgreSQLDialect
