@@ -1,4 +1,4 @@
-package com.alness.moneywise.profiles.controller;
+package com.alness.moneywise.users.controller;
 
 import java.util.List;
 import java.util.Map;
@@ -17,47 +17,47 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alness.moneywise.common.dto.CommonResponse;
-import com.alness.moneywise.profiles.dto.request.ProfileRequest;
-import com.alness.moneywise.profiles.dto.response.ProfileResponse;
-import com.alness.moneywise.profiles.service.ProfileService;
+import com.alness.moneywise.users.dto.request.UserRequest;
+import com.alness.moneywise.users.dto.response.UserResponse;
+import com.alness.moneywise.users.service.UserService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("${api.prefix}/profiles")
-@Tag(name = "Profiles", description = "Profiles to manage access to endpoints.")
-public class ProfileController {
+@RequestMapping("${api.prefix}/users")
+@Tag(name = "Users", description = "Registration of users to manage access.")
+public class UserController {
     @Autowired
-    private ProfileService profileService;
+    private UserService userService;
 
     @GetMapping()
-    public ResponseEntity<List<ProfileResponse>> findAll(@RequestParam Map<String, String> parameters){
-        List<ProfileResponse> response = profileService.find(parameters);
+    public ResponseEntity<List<UserResponse>> findAll(@RequestParam Map<String, String> parameters) {
+        List<UserResponse> response = userService.find(parameters);
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProfileResponse> findOne(@PathVariable String id){
-        ProfileResponse response = profileService.findOne(id);
+    public ResponseEntity<UserResponse> findOne(@PathVariable String id) {
+        UserResponse response = userService.findOne(id);
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
     @PostMapping()
-    public ResponseEntity<ProfileResponse> save(@Valid @RequestBody ProfileRequest request){
-        ProfileResponse response = profileService.save(request);
-        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    public ResponseEntity<UserResponse> save(@Valid @RequestBody UserRequest request) {
+        UserResponse response = userService.save(request);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProfileResponse> update(@PathVariable String id, @RequestBody ProfileRequest request){
-        ProfileResponse response = profileService.update(id, request);
+    public ResponseEntity<UserResponse> update(@PathVariable String id, @RequestBody UserRequest request){
+        UserResponse response = userService.update(id, request);
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<CommonResponse> delete(@PathVariable String id){
-        CommonResponse response = profileService.delete(id);
+        CommonResponse response = userService.delete(id);
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 }

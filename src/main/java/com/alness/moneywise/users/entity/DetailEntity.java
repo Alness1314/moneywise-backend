@@ -1,7 +1,6 @@
 package com.alness.moneywise.users.entity;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -37,9 +36,6 @@ public class DetailEntity implements Serializable{
 
     @Column(columnDefinition = "character varying(64)")
     private String maternalSurname;
-
-    @Column(name =  "create_at", nullable = false, updatable = false, columnDefinition = "timestamp without time zone")
-    private LocalDateTime createAt;
 
     @OneToOne
     @JoinColumn(name = "user_id")
