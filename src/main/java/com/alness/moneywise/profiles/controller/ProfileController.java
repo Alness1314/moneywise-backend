@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alness.moneywise.common.dto.CommonResponse;
 import com.alness.moneywise.profiles.dto.request.ProfileRequest;
 import com.alness.moneywise.profiles.dto.response.ProfileResponse;
 import com.alness.moneywise.profiles.service.ProfileService;
@@ -50,6 +52,12 @@ public class ProfileController {
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable String id, @RequestBody ProfileRequest request){
         ProfileResponse response = profileService.update(id, request);
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<CommonResponse> delete(@PathVariable String id){
+        CommonResponse response = profileService.delete(id);
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 }

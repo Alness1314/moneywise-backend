@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.alness.moneywise.common.dto.CommonResponse;
+import com.alness.moneywise.exceptions.NotFoundException;
 import com.alness.moneywise.profiles.dto.request.ProfileRequest;
 import com.alness.moneywise.profiles.dto.response.ProfileResponse;
 import com.alness.moneywise.profiles.entity.ProfileEntity;
@@ -42,7 +44,7 @@ public class ProfileServiceImpl implements ProfileService {
     public ProfileResponse findOne(String id) {
         Specification<ProfileEntity> specification = filterWithParameters(Map.of("id", id, "enabled", "true"));
         ProfileEntity user = profileRepo.findOne(specification)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found or deactivated"));
+                .orElseThrow(() -> new NotFoundException("User not found or deactivated."));
 
         return mapperDto(user);
     }
@@ -63,7 +65,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public ProfileResponse update(String id, ProfileRequest request) {
         ProfileEntity updateProfile = profileRepo.findById(UUID.fromString(id))
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Profile not found"));
+                .orElseThrow(() -> new NotFoundException("Profile not found"));
 
         // Actualizar los campos del perfil usando `mapper`
         mapper.map(request, updateProfile);
@@ -80,9 +82,17 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public void delete(String id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+    public CommonResponse delete(String id) {
+        ProfileEntity deleteProfile = profileRepo.findById(UUID.fromString(id))
+                .orElseThrow(() -> new NotFoundException("Profile not found"));
+        try {
+            profileRepo.delete(deleteProfile);
+            return new CommonResponse("The profile has been deleted successfully.",true);
+        } catch (Exception e) {
+            log.error("Error detele profile {}", e.getMessage());
+            return new CommonResponse("The profile could not be deleted.",false);
+        }
+
     }
 
     private ProfileResponse mapperDto(ProfileEntity source) {
