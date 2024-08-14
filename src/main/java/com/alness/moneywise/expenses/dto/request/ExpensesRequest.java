@@ -2,6 +2,7 @@ package com.alness.moneywise.expenses.dto.request;
 
 import java.math.BigDecimal;
 
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,8 +15,12 @@ import lombok.Setter;
 @NoArgsConstructor @AllArgsConstructor
 @Builder
 public class ExpensesRequest {
+    @NotNull
+    @NotEmpty
+    private String bankOrEntity;
 
     @NotNull
+    @NotEmpty
     private String description;
 
     @NotNull

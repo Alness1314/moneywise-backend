@@ -18,6 +18,7 @@ import lombok.Setter;
 @Builder
 public class ExpensesResponse {
     private UUID id;
+    private String bankOrEntity;
     private String description;
     private BigDecimal amount;
     private LocalDate paymentDate;

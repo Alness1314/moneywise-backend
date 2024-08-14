@@ -3,6 +3,7 @@ package com.alness.moneywise.users.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.alness.moneywise.common.dto.CommonResponse;
+import com.alness.moneywise.exceptions.NotFoundException;
 import com.alness.moneywise.profiles.entity.ProfileEntity;
 import com.alness.moneywise.profiles.repository.ProfileRepository;
 import com.alness.moneywise.users.dto.request.UserRequest;
@@ -60,7 +62,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse findOne(String id) {
-        throw new UnsupportedOperationException("Unimplemented method 'findOne'");
+        UserEntity user = userRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new NotFoundException("User not found."));
+        return mapperDto(user);
     }
 
     @Override
@@ -98,7 +102,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public CommonResponse delete(String id) {
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+        UserEntity user = userRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new NotFoundException("User to delete not found."));
+        try {
+            userRepository.delete(user);
+            return new CommonResponse("User delete successfully", true);
+        } catch (Exception e) {
+            log.error("Error {}", e.getMessage());
+            return new CommonResponse("Error to delete user.", false);
+        }
     }
 
     private UserResponse mapperDto(UserEntity source) {

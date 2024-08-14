@@ -34,23 +34,26 @@ public class ExpensesEntity {
     @Column(name = "id", updatable = false, nullable = false, columnDefinition = "uuid")
     private UUID id;
 
+    @Column(name = "bank_or_entity", nullable = false, columnDefinition = "character varying(64)")
+    private String bankOrEntity;
+
     @Column(nullable = false, columnDefinition = "character varying(256)")
     private String description;
 
     @Column(nullable = false, columnDefinition = "numeric(21,8)")
     private BigDecimal amount;
 
-    @Column(nullable = false, columnDefinition = "date")
+    @Column(name = "payment_date", nullable = false, columnDefinition = "date")
     private LocalDate paymentDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity usuario;
 
-    @Column(nullable = false, columnDefinition = "boolean")
+    @Column(name = "payment_status", nullable = false, columnDefinition = "boolean")
     private Boolean paymentStatus;
 
-    @Column(nullable = false, columnDefinition = "timestamp without time zone")
+    @Column(name = "create_at", nullable = false, columnDefinition = "timestamp without time zone")
     private LocalDateTime createAt;
 
     @PrePersist()
