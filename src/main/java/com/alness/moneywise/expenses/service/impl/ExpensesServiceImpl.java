@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.alness.moneywise.categories.entity.CategoryEntity;
+import com.alness.moneywise.categories.repository.CategoryRepository;
 import com.alness.moneywise.common.dto.CommonResponse;
 import com.alness.moneywise.common.utils.Formatters;
 import com.alness.moneywise.exceptions.GlobalExceptionHandler;
@@ -31,17 +33,20 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class ExpensesServiceImpl implements ExpensesService{
+public class ExpensesServiceImpl implements ExpensesService {
     @Autowired
     private ExpensesRepository expensesRepository;
 
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     private ModelMapper mapper = new ModelMapper();
 
     @PostConstruct
-    public void init(){
+    public void init() {
         mapper.getConfiguration().setSkipNullEnabled(true);
         mapper.getConfiguration().setFieldMatchingEnabled(true);
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
@@ -60,9 +65,9 @@ public class ExpensesServiceImpl implements ExpensesService{
         mapper.createTypeMap(ExpensesRequest.class, ExpensesEntity.class)
                 .addMappings(
                         mpa -> mpa.using(localDateConverter).map(ExpensesRequest::getPaymentDate,
-                        ExpensesEntity::setPaymentDate));
+                                ExpensesEntity::setPaymentDate));
     }
-    
+
     @Override
     public List<ExpensesResponse> find(Map<String, String> params) {
         return expensesRepository.findAll()
@@ -79,10 +84,14 @@ public class ExpensesServiceImpl implements ExpensesService{
     @Override
     public ExpensesResponse save(ExpensesRequest request) {
         ExpensesEntity expenses = mapper.map(request, ExpensesEntity.class);
-        UserEntity user = userRepository.findById(UUID.fromString(request.getUser())).orElseThrow(() -> new NotFoundException("User not found."));
+        UserEntity user = userRepository.findById(UUID.fromString(request.getUser()))
+                .orElseThrow(() -> new NotFoundException("User not found."));
         expenses.setUsuario(user);
+        CategoryEntity category = categoryRepository.findById(UUID.fromString(request.getCategory()))
+                .orElseThrow(() -> new NotFoundException("category not found."));
+        expenses.setCategory(category);
         try {
-           expenses = expensesRepository.save(expenses);
+            expenses = expensesRepository.save(expenses);
         } catch (Exception e) {
             log.error("Error to save expenses {}", e.getMessage());
             e.printStackTrace();
@@ -104,5 +113,5 @@ public class ExpensesServiceImpl implements ExpensesService{
     private ExpensesResponse mapperDto(ExpensesEntity expenses) {
         return mapper.map(expenses, ExpensesResponse.class);
     }
-    
+
 }

@@ -1,11 +1,9 @@
-package com.alness.moneywise.expenses.dto.response;
+package com.alness.moneywise.income.dto.response;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
-
-import com.alness.moneywise.categories.dto.response.CategoryResponse;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,13 +16,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ExpensesResponse {
+public class IncomeResponse {
     private UUID id;
-    private String bankOrEntity;
+    private String source;
     private String description;
     private BigDecimal amount;
     private LocalDate paymentDate;
-    private CategoryResponse category;
-    private Boolean paymentStatus;
     private LocalDateTime createAt;
 }

@@ -28,6 +28,9 @@ public class ExpensesRequest {
     
     @NotNull
     private String user;
+
+    @NotNull
+    private String category;
     
     @NotNull
     private String paymentDate;

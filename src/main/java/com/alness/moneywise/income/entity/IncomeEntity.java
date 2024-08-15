@@ -1,11 +1,10 @@
-package com.alness.moneywise.expenses.entity;
+package com.alness.moneywise.income.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import com.alness.moneywise.categories.entity.CategoryEntity;
 import com.alness.moneywise.users.entity.UserEntity;
 
 import jakarta.persistence.Column;
@@ -18,27 +17,24 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Entity
+@Table(name = "income")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Entity
-@Table(name = "expenses")
-public class ExpensesEntity {
-
+public class IncomeEntity {
     @Id
     @GeneratedValue(generator = "uuid2")
     @Column(name = "id", updatable = false, nullable = false, columnDefinition = "uuid")
     private UUID id;
 
-    @Column(name = "bank_or_entity", nullable = false, columnDefinition = "character varying(64)")
-    private String bankOrEntity;
+    @Column(nullable = false, columnDefinition = "character varying(128)")
+    private String source;
 
     @Column(nullable = false, columnDefinition = "character varying(256)")
     private String description;
@@ -52,13 +48,6 @@ public class ExpensesEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity usuario;
-
-    @Column(name = "payment_status", nullable = false, columnDefinition = "boolean")
-    private Boolean paymentStatus;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id", nullable = false)
-    private CategoryEntity category;
 
     @Column(name = "create_at", nullable = false, columnDefinition = "timestamp without time zone")
     private LocalDateTime createAt;
