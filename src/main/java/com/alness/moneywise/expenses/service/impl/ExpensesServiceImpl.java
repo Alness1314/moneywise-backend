@@ -11,6 +11,7 @@ import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,7 @@ import com.alness.moneywise.expenses.dto.response.ExpensesResponse;
 import com.alness.moneywise.expenses.entity.ExpensesEntity;
 import com.alness.moneywise.expenses.repository.ExpensesRepository;
 import com.alness.moneywise.expenses.service.ExpensesService;
+import com.alness.moneywise.expenses.specification.ExpensesSpecification;
 import com.alness.moneywise.users.entity.UserEntity;
 import com.alness.moneywise.users.repository.UserRepository;
 
@@ -70,7 +72,8 @@ public class ExpensesServiceImpl implements ExpensesService {
 
     @Override
     public List<ExpensesResponse> find(Map<String, String> params) {
-        return expensesRepository.findAll()
+        Specification<ExpensesEntity> specification = filterWithParameters(params);
+        return expensesRepository.findAll(specification)
                 .stream()
                 .map(this::mapperDto)
                 .collect(Collectors.toList());
@@ -78,7 +81,9 @@ public class ExpensesServiceImpl implements ExpensesService {
 
     @Override
     public ExpensesResponse findOne(String id) {
-        throw new UnsupportedOperationException("Unimplemented method 'findOne'");
+        ExpensesEntity expenses = expensesRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new NotFoundException("Expenses not found."));
+        return mapperDto(expenses);
     }
 
     @Override
@@ -112,6 +117,10 @@ public class ExpensesServiceImpl implements ExpensesService {
 
     private ExpensesResponse mapperDto(ExpensesEntity expenses) {
         return mapper.map(expenses, ExpensesResponse.class);
+    }
+
+    public Specification<ExpensesEntity> filterWithParameters(Map<String, String> parameters) {
+        return new ExpensesSpecification().getSpecificationByFilters(parameters);
     }
 
 }

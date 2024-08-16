@@ -1,4 +1,4 @@
-package com.alness.moneywise.expenses.controller;
+package com.alness.moneywise.income.controller;
 
 import java.util.List;
 import java.util.Map;
@@ -17,48 +17,47 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alness.moneywise.common.dto.CommonResponse;
-import com.alness.moneywise.expenses.dto.request.ExpensesRequest;
-import com.alness.moneywise.expenses.dto.response.ExpensesResponse;
-import com.alness.moneywise.expenses.service.ExpensesService;
+import com.alness.moneywise.income.dto.request.IncomeRequest;
+import com.alness.moneywise.income.dto.response.IncomeResponse;
+import com.alness.moneywise.income.service.IncomeService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("${api.prefix}/expenses")
-@Tag(name = "Expenses", description = ".")
-public class ExpensesController {
+@RequestMapping("${api.prefix}/income")
+@Tag(name = "Income", description = ".")
+public class IncomeController {
     @Autowired
-    private ExpensesService expensesService;
+    private IncomeService incomeService;
 
     @GetMapping()
-    public ResponseEntity<List<ExpensesResponse>> findAll(@RequestParam Map<String, String> parameters) {
-        List<ExpensesResponse> response = expensesService.find(parameters);
+    public ResponseEntity<List<IncomeResponse>> findAll(@RequestParam Map<String, String> parameters) {
+        List<IncomeResponse> response = incomeService.find(parameters);
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ExpensesResponse> findOne(@PathVariable String id) {
-        ExpensesResponse response = expensesService.findOne(id);
+    public ResponseEntity<IncomeResponse> findOne(@PathVariable String id) {
+        IncomeResponse response = incomeService.findOne(id);
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
     @PostMapping()
-    public ResponseEntity<ExpensesResponse> save(@Valid @RequestBody ExpensesRequest request) {
-        ExpensesResponse response = expensesService.save(request);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    public ResponseEntity<IncomeResponse> save(@Valid @RequestBody IncomeRequest request) {
+        IncomeResponse response = incomeService.save(request);
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ExpensesResponse> update(@PathVariable String id, @RequestBody ExpensesRequest request) {
-        ExpensesResponse response = expensesService.update(id, request);
+    public ResponseEntity<IncomeResponse> update(@PathVariable String id, @RequestBody IncomeRequest request) {
+        IncomeResponse response = incomeService.update(id, request);
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<CommonResponse> delete(@PathVariable String id) {
-        CommonResponse response = expensesService.delete(id);
+        CommonResponse response = incomeService.delete(id);
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
-
 }
