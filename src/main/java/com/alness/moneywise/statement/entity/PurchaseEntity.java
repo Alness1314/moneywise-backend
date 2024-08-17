@@ -1,10 +1,8 @@
-package com.alness.moneywise.purchase.entity;
+package com.alness.moneywise.statement.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
-
-import com.alness.moneywise.statement.entity.StatementEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,15 +27,32 @@ public class PurchaseEntity {
     @GeneratedValue(generator = "uuid2")
     @Column(name = "id", updatable = false, nullable = false, columnDefinition = "uuid")
     private UUID id;
+
+    @Column(nullable = false, columnDefinition = "character varying(64)")
     private String store;
+
+    @Column(columnDefinition = "character varying(128)")
     private String description;
+
+    @Column(nullable = false, columnDefinition = "numeric(21,8)")
     private BigDecimal mount;
-    private String deadlines;
+
+    @Column(nullable = false, columnDefinition = "integer")
+    private Integer deadlines;
+
+    @Column(name = "without_interest", nullable = false, columnDefinition = "boolean")
     private Boolean withoutInterest;
-    private String remainingDeadlines;
+
+    @Column(name = "monthly_payment", nullable = false, columnDefinition = "integer")
+    private BigDecimal monthlyPayment;
+
+    @Column(name = "own_debt", nullable = false, columnDefinition = "boolean")
     private Boolean ownDebt;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "statement_id")
     private StatementEntity statement;
+    
+    @Column(name =  "create_at", nullable = false, updatable = false, columnDefinition = "timestamp without time zone")
     private LocalDateTime createAt;
 }
