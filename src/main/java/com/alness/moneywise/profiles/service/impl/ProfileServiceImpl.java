@@ -44,9 +44,21 @@ public class ProfileServiceImpl implements ProfileService {
     public ProfileResponse findOne(String id) {
         Specification<ProfileEntity> specification = filterWithParameters(Map.of("id", id, "enabled", "true"));
         ProfileEntity user = profileRepo.findOne(specification)
-                .orElseThrow(() -> new NotFoundException("User not found or deactivated."));
+                .orElseThrow(() -> new NotFoundException("Profile not found or deactivated."));
 
         return mapperDto(user);
+    }
+
+    @Override
+    public ProfileResponse findByName(String name) {
+        Specification<ProfileEntity> specification = filterWithParameters(Map.of("name", name, "enabled", "true"));
+        ProfileEntity profile = profileRepo.findOne(specification)
+                .orElse(null);
+        if (profile != null) {
+            return mapperDto(profile);
+        }
+
+        return null;
     }
 
     @Override
@@ -87,10 +99,10 @@ public class ProfileServiceImpl implements ProfileService {
                 .orElseThrow(() -> new NotFoundException("Profile not found"));
         try {
             profileRepo.delete(deleteProfile);
-            return new CommonResponse("The profile has been deleted successfully.",true);
+            return new CommonResponse("The profile has been deleted successfully.", true);
         } catch (Exception e) {
             log.error("Error detele profile {}", e.getMessage());
-            return new CommonResponse("The profile could not be deleted.",false);
+            return new CommonResponse("The profile could not be deleted.", false);
         }
 
     }
@@ -102,4 +114,5 @@ public class ProfileServiceImpl implements ProfileService {
     public Specification<ProfileEntity> filterWithParameters(Map<String, String> parameters) {
         return new ProfileSpecification().getSpecificationByFilters(parameters);
     }
+
 }

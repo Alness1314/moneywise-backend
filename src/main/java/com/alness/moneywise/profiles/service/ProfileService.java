@@ -10,6 +10,7 @@ import com.alness.moneywise.profiles.dto.response.ProfileResponse;
 public interface ProfileService {
     public List<ProfileResponse> find(Map<String, String> parameters);
     public ProfileResponse findOne(String id);
+    public ProfileResponse findByName(String name);
     public ProfileResponse save(ProfileRequest request);
     public ProfileResponse update(String id, ProfileRequest request);
     public CommonResponse delete(String id);

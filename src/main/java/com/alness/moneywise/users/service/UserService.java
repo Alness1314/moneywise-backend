@@ -13,4 +13,5 @@ public interface UserService {
     public UserResponse save(UserRequest request);
     public UserResponse update(String id, UserRequest request);
     public CommonResponse delete(String id);
+    public UserResponse findByUsername(String username);
 }

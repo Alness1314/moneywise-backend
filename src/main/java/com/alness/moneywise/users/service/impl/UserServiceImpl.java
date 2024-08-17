@@ -120,4 +120,15 @@ public class UserServiceImpl implements UserService {
     public Specification<UserEntity> filterWithParameters(Map<String, String> parameters) {
         return new UserSpecification().getSpecificationByFilters(parameters);
     }
+
+    @Override
+    public UserResponse findByUsername(String username) {
+        Specification<UserEntity> specification = filterWithParameters(Map.of("username", username, "enabled", "true"));
+        UserEntity user = userRepository.findOne(specification)
+                .orElse(null);
+        if (user != null)
+            return mapperDto(user);
+
+        return null;
+    }
 }
