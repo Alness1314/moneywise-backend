@@ -1,16 +1,15 @@
-package com.alness.moneywise.statement.entity;
+package com.alness.moneywise.purchase.entity;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -43,16 +42,22 @@ public class PurchaseEntity {
     @Column(name = "without_interest", nullable = false, columnDefinition = "boolean")
     private Boolean withoutInterest;
 
-    @Column(name = "monthly_payment", nullable = false, columnDefinition = "integer")
+    @Column(name = "monthly_payment", nullable = false, columnDefinition = "numeric(21,8)")
     private BigDecimal monthlyPayment;
 
     @Column(name = "own_debt", nullable = false, columnDefinition = "boolean")
     private Boolean ownDebt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "statement_id")
-    private StatementEntity statement;
+    @Column(name = "purchase_date", nullable = false, columnDefinition = "date")
+    private LocalDate purchaseDate;
     
     @Column(name =  "create_at", nullable = false, updatable = false, columnDefinition = "timestamp without time zone")
     private LocalDateTime createAt;
+
+
+    @PrePersist
+    public void init(){
+        setCreateAt(LocalDateTime.now());
+    }
+    
 }

@@ -1,9 +1,9 @@
-package com.alness.moneywise.statement.dto.response;
+package com.alness.moneywise.purchase.dto.request;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.UUID;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,14 +15,16 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PurchaseResponse {
-    private UUID id;
+public class PurchaseRequest {
     private String store;
     private String description;
     private BigDecimal mount;
+
+    @Min(1)
+    @Max(24)
     private Integer deadlines;
+    
     private Boolean withoutInterest;
-    private Integer remainingDeadlines;
     private Boolean ownDebt;
-    private LocalDateTime createAt;
+    private String purchaseDate;
 }

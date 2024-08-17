@@ -6,13 +6,18 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import jakarta.persistence.CascadeType;
+import com.alness.moneywise.purchase.entity.PurchaseEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,7 +51,9 @@ public class StatementEntity {
     @Column(name = "payment_without_interest", nullable = false, columnDefinition = "numeric(21,8)")
     private BigDecimal paymentWithoutInterest;
 
-    @OneToMany(mappedBy = "statement", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "statement_purchase", joinColumns = @JoinColumn(name = "statement_id"), inverseJoinColumns = @JoinColumn(name = "purchase_id"), uniqueConstraints = {
+    @UniqueConstraint(columnNames = { "statement_id", "purchase_id" }) })
     private List<PurchaseEntity> purchase;
 
     @Column(name = "create_at", nullable = false, columnDefinition = "timestamp without time zone")

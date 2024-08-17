@@ -21,5 +21,5 @@ public class StatementRequest {
     private String paymentDate;
     private BigDecimal payment;
     private BigDecimal paymentWithoutInterest;
-    private List<PurchaseRequest> purchase;
+    private List<String> purchase;
 }
